@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -ea # Exit on Error and Export all vars (required for envsubst)
+
+[[ -n $DEBUG_ENTRYPOINT ]] && set -x
+
+. ./conf.env
+
+# Write config file
+envsubst '$DB_HOST $DB_NAME $DB_USER $DB_PASS' < zabbix.conf.php.tpl > /var/www/html/conf/zabbix.conf.php
+
+apache2-foreground
